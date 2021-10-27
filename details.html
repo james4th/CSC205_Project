@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="utf-8">
+        <title>Course Details</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/custom.css">
+    </head>
+
+    <body>
+        <img id="logo-image" src="images/geneva_logo.png" alt="geneva logo">
+        <h1>Course Details</h1>
+
+        <!--Bootstrap cards for different categories of course data-->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card h-100 text-white bg-secondary mb-3" id="general-info">
+                    <div class="card-body">
+                        <h5 class="card-title">General Info</h5>
+                        <img src="images/Message-Information-64.png" alt="">
+                        <ul>
+                            <!--List items to be filled with data-->
+                            <li id="Line">Line: </li>
+                            <li id="Department">Department: </li>
+                            <li id="Number">Number: </li>
+                            <li id="Section">Section: </li>
+                            <li id="Title">Title: </li>
+                            <li id="Faculty">Faculty: </li>
+                            <li id="Credits">Credits: </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card h-100 text-white bg-secondary mb-3" id="registration-availability">
+                    <div class="card-body">
+                        <h5 class="card-title">Course Registration</h5>
+                        <img src="images/User-Add-64.png" alt="">
+                        <ul>
+                            <!--List items to be filled with data-->
+                            <li id="Openings">Openings: </li>
+                            <li id="Capacity">Capacity: </li>
+                            <li id="Status">Status: </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card h-100 text-white bg-secondary mb-3" id="date-time">
+                    <div class="card-body">
+                        <h5 class="card-title">Date & Time</h5>
+                        <img src="images/Clock-01-64.png" alt="">
+                        <ul>
+                            <!--List items to be filled with data-->
+                            <li id="Day">Day: </li>
+                            <li id="StartTime">Start Time: </li>
+                            <li id="EndTime">End Time: </li>
+                            <li id="StartDate">Start Date: </li>
+                            <li id="EndDate">End Date: </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card h-100 text-white bg-secondary mb-3" id="location">
+                    <div class="card-body">
+                        <h5 class="card-title">Location</h5>
+                        <img src="images/Map-Location-64.png" alt="">
+                        <ul>
+                            <!--List items to be filled with data-->
+                            <li id="Campus">Campus: </li>
+                            <li id="Building">Building: </li>
+                            <li id="Room">Room: </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="js/details.js"></script>
+    </body>
+</html>
