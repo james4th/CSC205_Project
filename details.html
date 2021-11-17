@@ -9,24 +9,30 @@
 
     <body>
         <img id="logo-image" src="images/geneva_logo.png" alt="geneva logo">
-        <h1>Course Details</h1>
+        <h1 id="details-header">Course Details</h1>
 
         <!--Bootstrap cards for different categories of course data-->
         <div class="row">
             <div class="col-sm-6">
                 <div class="card h-100 text-white bg-secondary mb-3" id="general-info">
                     <div class="card-body">
-                        <h5 class="card-title">General Info</h5>
-                        <img src="images/Message-Information-64.png" alt="">
+                        <h5 class="card-title"><span><img src="images/Message-Information-64.png" alt="" id="icon-image"></span>General Info</h5>
+                        <!--<img src="images/Message-Information-64.png" alt="">-->
                         <ul>
                             <!--List items to be filled with data-->
+                            <li id="id">ID: </li>
                             <li id="Line">Line: </li>
                             <li id="Department">Department: </li>
                             <li id="Number">Number: </li>
                             <li id="Section">Section: </li>
                             <li id="Title">Title: </li>
-                            <li id="Faculty">Faculty: </li>
+                            
                             <li id="Credits">Credits: </li>
+
+                            <!--Temporary items for new datafields-->
+                            
+                            
+                            <li id="Rating">Rating: </li>
                         </ul>
                     </div>
                 </div>
@@ -35,13 +41,15 @@
             <div class="col-sm-6">
                 <div class="card h-100 text-white bg-secondary mb-3" id="registration-availability">
                     <div class="card-body">
-                        <h5 class="card-title">Course Registration</h5>
-                        <img src="images/User-Add-64.png" alt="">
+                        <h5 class="card-title"><span><img src="images/User-Add-64.png" alt="" id="icon-image"></span> Registration</h5>
+                        <!--<img src="images/User-Add-64.png" alt="">-->
                         <ul>
                             <!--List items to be filled with data-->
                             <li id="Openings">Openings: </li>
                             <li id="Capacity">Capacity: </li>
                             <li id="Status">Status: </li>
+                            <li id="Faculty">Faculty: </li>
+                            <li id="Email">Email: </li>
                         </ul>
                     </div>
                 </div>
@@ -54,8 +62,8 @@
             <div class="col-sm-6">
                 <div class="card h-100 text-white bg-secondary mb-3" id="date-time">
                     <div class="card-body">
-                        <h5 class="card-title">Date & Time</h5>
-                        <img src="images/Clock-01-64.png" alt="">
+                        <h5 class="card-title"><span><img src="images/Clock-01-64.png" alt="" id="icon-image"></span>Date & Time</h5>
+                        <!--<img src="images/Clock-01-64.png" alt="">-->
                         <ul>
                             <!--List items to be filled with data-->
                             <li id="Day">Day: </li>
@@ -71,8 +79,8 @@
             <div class="col-sm-6">
                 <div class="card h-100 text-white bg-secondary mb-3" id="location">
                     <div class="card-body">
-                        <h5 class="card-title">Location</h5>
-                        <img src="images/Map-Location-64.png" alt="">
+                        <h5 class="card-title"><span><img src="images/Map-Location-64.png" alt="" id="icon-image"></span>Location</h5>
+                        <!--<img src="images/Map-Location-64.png" alt="">-->
                         <ul>
                             <!--List items to be filled with data-->
                             <li id="Campus">Campus: </li>

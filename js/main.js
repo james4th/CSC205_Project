@@ -1,56 +1,71 @@
 
-/**
- * courses - an array - indicated by the opening and closing [ ]
- * 
- * Each element of the array is a JSON object. { } indicate the start and the end of an object.  In the object are name/value pairs in 
- * the format of "name": "value"  If the value is numeric, the pair can be "name": 4  (no quotes around the number)
- * 
- * This format is JSON or JAvaScript Object Notation - more info here https://www.w3schools.com/js/js_json_intro.asp
- */
+let courses = "";
+// Listen for input in search bar and call function to filter courses
+courseSearch.oninput = function () {
+    searchCourses();    
+}
+var userInput = document.getElementById("courseSearch").innerHTML; 
+var etarget = "";
+courseSearch.addEventListener("input", (e) => etarget = e.target.value);
 
-let courses = [
-    {"Line":81,"Department":"BUS","Number":344,"Section":1,"Title":"MANAGEMENT OF INFORMATION SYSTEMS","Faculty":"Richards, Gordon P.","Openings":2,"Capacity":30,"Status":"Open","Day":"MWF","StartTime":"1:25:00 PM","EndTime":"2:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":167,"Department":"CSC","Number":133,"Section":2,"Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Madeira, Scott","Openings":6,"Capacity":15,"Status":"Open","Day":"H","StartTime":"2:00:00 PM","EndTime":"4:50 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":168,"Department":"CSC","Number":133,"Section":3,"Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Madeira, Scott","Openings":7,"Capacity":15,"Status":"Open","Day":"T","StartTime":"6:30:00 PM","EndTime":"9:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":169,"Department":"CSC","Number":133,"Section":"0A","Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Richards, Gordon P.","Openings":15,"Capacity":45,"Status":"Open","Day":"TH","StartTime":"8:00:00 AM","EndTime":"9:20 AM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 110 Chemistry room","Credits":4,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":170,"Department":"CSC","Number":190,"Section":1,"Title":"HTML","Faculty":"Madeira, Scott","Openings":4,"Capacity":25,"Status":"Open","Day":"M","StartTime":"2:30:00 PM","EndTime":"3:25 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 312A","Credits":1,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":171,"Department":"CSC","Number":205,"Section":1,"Title":"HCI DESIGN & PROGRAMMING","Faculty":"Madeira, Scott","Openings":10,"Capacity":25,"Status":"Open","Day":"MWF","StartTime":"11:15:00 AM","EndTime":"12:10 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":172,"Department":"CSC","Number":344,"Section":1,"Title":"MANAGEMENT INFORMATION SYSTEM","Faculty":"Poteete, Paul W. Steffine, Aaron","Openings":2,"Capacity":90,"Status":"Open","Day":"MWF","StartTime":"1:25:00 PM","EndTime":"2:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":173,"Department":"CSC","Number":363,"Section":"E1","Title":"DATABASE SYSTEMS","Faculty":"Hinderliter, Jeffery A","Openings":4,"Capacity":30,"Status":"Open","Day":"T","StartTime":"6:30:00 PM","EndTime":"9:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 233 Engineering Lab\/Classroom","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":296,"Department":"HUM","Number":103,"Section":"0A","Title":"INVITATION TO THE HUMANTIES","Faculty":"Miller, Eric John","Openings":12,"Capacity":180,"Status":"Open","Day":"W","StartTime":"11:15:00 AM","EndTime":"12:10 PM","Campus":" Main Campus","Building":" Old Main","Room":" John White Chapel","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021"}
-]
+// When showOpen checkbox clicked show/hide full course listing
+showOpen.onclick = function () {
+    if (document.getElementById("showOpen").checked == true) {
+      filterClosed();
+    }
+    else if (document.getElementById("showOpen").checked == false) {
+      resetTable();
+      strikeClosedCourses();
+    }
+}
 
-// Create a filtered copy of the courses array
-filtered_Courses = courses.filter(function(value, index, arr){
-    delete value.Line;
-    delete value.Section;
-    delete value.Openings;
-    delete value.Capacity;
-    delete value.Campus;
-    delete value["Start Date"];
-    delete value["End Date"];
-    return value;
-})
+// Call functions to change table to dark/light mode when checkbox clicked
+darkMode.onclick = function () {
+    if (document.getElementById("darkMode").checked == true) {
+        darkTable();
+        strikeClosedCourses();
+    }
+    else if (document.getElementById("darkMode").checked == false) {
+        lightTable();
+        strikeClosedCourses();
+    }
+}
 
-// Pop up an alert on the page after the page and all stylesheets and images have loaded
-window.onload = (event) => {
+// Get data from server
+async function fetchJSON() {
+    let response = await fetch("https://csc205.cscprof.com/courses");
+    courses = await response.json();
 
-    // Create an annoying popup to show that we have access to the data in the courses JSON array
-    alert(courses[5].Title);
-
-    // Log a message to the console to show that you can use this for debugging purposes
-    console.log('The page is loaded. We are in the console');
-
-    // Get table from HTML, keys from the filtered courses, and call function to create table header
-    let course_Catalog = document.getElementById("course-catalog")
+    let course_Catalog = document.getElementById("course-catalog");
+    let filtered_Courses = filterCourses(courses);
     let headings = Object.keys(filtered_Courses[0]);
+    // Use data to generate table and cross out full courses
     generateTableHead(course_Catalog, headings);
-
-    // Fill the table with course info
     generateTable(course_Catalog, filtered_Courses);
-
-    // Cross out closed courses
     strikeClosedCourses();
+}
+
+window.onload = (event) => {
+    // Call function to get data from server
+    fetchJSON();
+}
+
+function filterCourses(courses) {
+    courses.forEach(function (course) {
+        /* let num = course.Department + " " + course.Number + " - " + course.Title;
+        course.CourseTitle = num; */
+
+        //delete course.id;
+        delete course.Line;
+        delete course.Section;
+        delete course.Openings;
+        delete course.Capacity;
+        delete course["Start Date"];
+        delete course["End Date"];
+        delete course.Rating;
+        delete course.Email;
+    });
+    return courses;
 }
 
 // Generate the Table Heading
@@ -78,6 +93,7 @@ function generateTable(target_Table, data) {
 
     // Create the tbody as part of the table
     let tbody = target_Table.createTBody();
+    tbody.setAttribute("id", "class-data");
 
     // Loop through the rows of data
     for (let element of data) {
@@ -91,11 +107,19 @@ function generateTable(target_Table, data) {
             // Create a cell in the row
             let cell = row.insertCell();
 
+            cell.innerHTML = removeNull(element);
+
+            if (key == "Number") {
+                let detailsLink = '<a href="details.html?id=' + element.id + '">' + element.Number + '</a>';
+                cell.innerHTML = detailsLink; 
+            }
+            else {cell.innerHTML = element[key];}
+
             // Create a text node that has the cell content
-            let text = document.createTextNode(element[key]);
+            //let text = document.createTextNode(element[key]);
 
             // Add the text content to the cell
-            cell.appendChild(text);
+            //cell.appendChild(text);
         }
     }
 }
@@ -113,11 +137,71 @@ function strikeClosedCourses() {
     for (let i = 1; i < length; i++) {
 
         // Get status of course
-        let courseStatus = courses.item(i).cells.item(4).innerHTML;
+        let courseStatus = courses.item(i).cells.item(5).innerHTML;
 
         // Mute and strikethrough text if course is closed
-        if (courseStatus.toString() == "Closed") {
+        if (courseStatus.toString() == "Full") {
             courses[i].className = 'text-decoration-line-through text-muted';
         }
     }
+}
+
+// Apply search criteria to table
+function searchCourses() {
+    let tbody = document.getElementById("class-data");
+    tbody.remove();
+  
+    let x = courses.filter(oneClass => Object.keys(oneClass)
+      .some(key => String(oneClass[key]).toLowerCase().includes(etarget.toLowerCase()))); 
+    let table = document.getElementById("course-catalog");
+    generateTable(table, x);
+    strikeClosedCourses();
+    
+    // If no results are found, inform user
+    if (x.length < 1) {
+        document.getElementById("noResults").innerHTML = "No results found"
+    }
+}
+
+// Get data from table, filter closed courses, and rebuild table
+function filterClosed() {
+    let tbody = document.getElementById("class-data");
+    tbody.remove();
+  
+    let x = courses.filter(oneClass => Object.keys(oneClass)
+    .some(key => String(oneClass[key]).includes('Open'))); 
+    let table = document.getElementById("course-catalog");
+    
+    generateTable(table, x); 
+}
+
+// Reset table to show closed courses
+function resetTable() {
+    let tbody = document.getElementById("class-data");
+    tbody.remove();
+  
+    let x = courses.filter(oneClass => Object.keys(oneClass)
+    .some(key => String(oneClass[key]))); 
+    let table = document.getElementById("course-catalog");
+    
+    generateTable(table, x); 
+}
+
+// Check data in cells and replace any nulls with N/A
+function removeNull(dataCell) {
+    if (!dataCell[key]) {
+      dataCell[key] = "N/A";
+    }
+}
+
+// Set table to dark mode
+function darkTable() {
+    let courseTable = document.getElementById("course-catalog");
+    courseTable.setAttribute("class", "table table-dark table-striped table-hover")
+}
+
+// Set table to light mode
+function lightTable() {
+    let courseTable = document.getElementById("course-catalog");
+    courseTable.setAttribute("class", "table table-striped table-hover");
 }

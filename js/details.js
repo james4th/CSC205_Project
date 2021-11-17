@@ -1,28 +1,63 @@
-let courses = [
-    {"Line":81,"Department":"BUS","Number":344,"Section":1,"Title":"MANAGEMENT OF INFORMATION SYSTEMS","Faculty":"Richards, Gordon P.","Openings":2,"Capacity":30,"Status":"Open","Day":"MWF","StartTime":"1:25:00 PM","EndTime":"2:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":167,"Department":"CSC","Number":133,"Section":2,"Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Madeira, Scott","Openings":6,"Capacity":15,"Status":"Open","Day":"H","StartTime":"2:00:00 PM","EndTime":"4:50 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":168,"Department":"CSC","Number":133,"Section":3,"Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Madeira, Scott","Openings":7,"Capacity":15,"Status":"Open","Day":"T","StartTime":"6:30:00 PM","EndTime":"9:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":169,"Department":"CSC","Number":133,"Section":"0A","Title":"SURVEY OF COMPUTER SCIENCE","Faculty":"Richards, Gordon P.","Openings":15,"Capacity":45,"Status":"Open","Day":"TH","StartTime":"8:00:00 AM","EndTime":"9:20 AM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 110 Chemistry room","Credits":4,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":170,"Department":"CSC","Number":190,"Section":1,"Title":"HTML","Faculty":"Madeira, Scott","Openings":4,"Capacity":25,"Status":"Open","Day":"M","StartTime":"2:30:00 PM","EndTime":"3:25 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 312A","Credits":1,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":171,"Department":"CSC","Number":205,"Section":1,"Title":"HCI DESIGN & PROGRAMMING","Faculty":"Madeira, Scott","Openings":10,"Capacity":25,"Status":"Open","Day":"MWF","StartTime":"11:15:00 AM","EndTime":"12:10 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":172,"Department":"CSC","Number":344,"Section":1,"Title":"MANAGEMENT INFORMATION SYSTEM","Faculty":"Poteete, Paul W. Steffine, Aaron","Openings":2,"Capacity":90,"Status":"Open","Day":"MWF","StartTime":"1:25:00 PM","EndTime":"2:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 341 Computer Science Lab","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":173,"Department":"CSC","Number":363,"Section":"E1","Title":"DATABASE SYSTEMS","Faculty":"Hinderliter, Jeffery A","Openings":4,"Capacity":30,"Status":"Open","Day":"T","StartTime":"6:30:00 PM","EndTime":"9:20 PM","Campus":" Main Campus","Building":" Science and Engineering","Room":" SE 233 Engineering Lab\/Classroom","Credits":3,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021\r\n"}
-    ,{"Line":296,"Department":"HUM","Number":103,"Section":"0A","Title":"INVITATION TO THE HUMANTIES","Faculty":"Miller, Eric John","Openings":12,"Capacity":180,"Status":"Open","Day":"W","StartTime":"11:15:00 AM","EndTime":"12:10 PM","Campus":" Main Campus","Building":" Old Main","Room":" John White Chapel","Credits":0,"Start Date":"8\/30\/2021","End Date":"12\/17\/2021"}
-]
-
 window.onload = (event) => {
-    // Store keys, data from a sample course as arrays and create empty array
-    let ids = Object.keys(courses[0])
-    let content = Object.values(courses[1]);
-    let html_ids = [];
+    // Get the id of the course
+    let id = getCourseId();
+    let serverUrl = getServerUrl(id);
 
-    // Loop through id's, delete any white space, and add to html_ids array
+    // Call function to get data from server
+    getCourseDetails(serverUrl);
+}
+
+// Fetch data from server
+async function getCourseDetails(serverUrl) {
+    let response = await fetch(serverUrl);
+    let data = await response.json();
+    // Fill in details with data
+    fillCourseDetails(data);
+}
+
+// Add data from server to details page
+function fillCourseDetails(details) {
+    // Store keys and data, and create empty array
+    let ids = Object.keys(details);
+    let content = Object.values(details);
+    let html_ids = [];
+    //let detailsHeader = document.getElementById("details-header");
+
+    // Loop through id's, delete any white space, and save in array
     for (let i = 0; i < ids.length; i++) {
         html_ids.push(ids[i].split(" ").join(""));
     }
 
     // Loop through html_ids and for each id add that content to the HTML page
     for (let i = 0; i < html_ids.length; i++) {
-        document.getElementById(html_ids[i]).innerHTML += content[i];
+        // If field is Email, creat mailto link
+        if (html_ids[i] == "Email") {
+            let emailLink = '<a href="mailto:' + content[i] + '" class = "link-light">' + content[i] + '</a>';
+            document.getElementById(html_ids[i]).innerHTML += emailLink;
+        }
+        // Generate header
+        /* else if (html_ids[i] == "Department") {detailsHeader.innerHTML += content[i];}
+        else if (html_ids[i] == "Number") {detailsHeader.innerHTML += " " + content[i];}
+        else if (html_ids[i] == "Title") {detailsHeader.innerHTML += " - " + content[i];} */
+        else {document.getElementById(html_ids[i]).innerHTML += removeNull(content[i]);}
     }
+}
+
+function getCourseId() {
+    let url_str = document.URL;
+    let url = new URL(url_str);
+    return url.searchParams.get('id');
+}
+
+
+function getServerUrl(id){
+    return "https://csc205.cscprof.com/courses/" + id;
+}
+
+// Check for null values and replace with N/A
+function removeNull(dataCell) {
+    if (!dataCell) {
+      dataCell = "N/A";
+      return dataCell;
+    } else {return dataCell};
 }

@@ -6,3 +6,7 @@ body {
 #logo-image {
     height: 75px;
 }
+
+#icon-image {
+    padding-right: 5px;
+}
